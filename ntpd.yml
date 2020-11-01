@@ -1,0 +1,36 @@
+- hosts: web
+  tasks:
+  - name: install httpd
+    yum:
+     name: httpd
+     state: latest
+  - name: start httpd
+    service: 
+     name: httpd
+     state: started 
+  - name: enabled httpd
+    service:
+     name: httpd
+     enabled: yes
+  
+  - name: download wordpress
+    get_url:
+      url: https://wordpress.org/latest.zip
+      dest: /var/www/html/ 
+  - name: download unzip
+    yum:
+      name: unzip
+      state: latest    
+  - name: Unzip 
+    unarchive:
+      src: /var/www/html/wordpress-5.5.1.zip
+      dest: /var/www/html/
+      remote_src: yes
+  - name: move wordpress
+    shell: rsync -r /var/www/html/wordpress/* /var/www/html/
+  - name: Restart service httpd, in all cases
+    service:
+      name: httpd
+      state: restarted 
+ 
+  

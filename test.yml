@@ -1,0 +1,4 @@
+- hosts: web
+  tasks:
+  - name: create user
+    shell: userdel tom
